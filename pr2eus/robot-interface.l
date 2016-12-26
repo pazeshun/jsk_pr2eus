@@ -446,23 +446,23 @@
            (send minjerk :reset :position-list (list #f(0) #f(1)) :time-list (list (elt tms i)))
            (send robot :angle-vector av-prev)
            (if target-limbs
-               (progn
-                 (send minjerk :start-interpolation)
-                 (while (send minjerk :interpolatingp)
-                   (send minjerk :pass-time 100)
-                   (setq p (elt (send minjerk :position) 0))
-                   ;; set midpoint of av as initial pose of IK
-                   (send robot :angle-vector (midpoint p av-prev av))
-                   (dolist (limb target-limbs)
-                     ;; don't move arm by IK when interpolation is already ended
-                     (if (>= p 1) (return))
-                     (setq ec-prev (elt end-coords-prev (position limb limbs))
-                           ec-current (elt end-coords-current (position limb limbs)))
-                     (setq ret (and ret
-                                    (send robot limb :inverse-kinematics (midcoords p ec-prev ec-current)))))
-                   (push (send robot :angle-vector) interpolated-avs)
-                   (push 100 interpolated-tms)
-                   ))
+             (progn
+               (send minjerk :start-interpolation)
+               (while (send minjerk :interpolatingp)
+                      (send minjerk :pass-time 100)
+                      (setq p (elt (send minjerk :position) 0))
+                      ;; set midpoint of av as initial pose of IK
+                      (send robot :angle-vector (midpoint p av-prev av))
+                      (dolist (limb target-limbs)
+                        ;; don't move arm by IK when interpolation is already ended
+                        (if (>= p 1) (return))
+                        (setq ec-prev (elt end-coords-prev (position limb limbs))
+                              ec-current (elt end-coords-current (position limb limbs)))
+                        (setq ret (and ret
+                                       (send robot limb :inverse-kinematics (midcoords p ec-prev ec-current)))))
+                      (push (send robot :angle-vector) interpolated-avs)
+                      (push 100 interpolated-tms)
+                      ))
              (progn
                (push av interpolated-avs)
                (push 50 interpolated-tms)))
