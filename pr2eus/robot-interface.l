@@ -475,7 +475,7 @@
          (send robot :angle-vector av-orig)
          (setq av-prev av-prev-orig)
          (unless ret
-           (warning-message 1 ":anlge-vector-sequnce fail to generate end-coords-interpolation motion~%")
+           (warning-message 1 ":angle-vector-sequnce fail to generate end-coords-interpolation motion~%")
            (return-from :angle-vector-sequence nil))
          ))
      (prog1 ;; angle-vector-sequence returns avs
